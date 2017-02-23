@@ -59,6 +59,28 @@ class MetadataIndex extends BaseIndexObject
 		return self::$fieldsMap;
 	}
 
+	protected static $elasticFieldsMap;
+
+	public static function getElasticIndexFieldsMap()
+	{
+		if (!self::$elasticFieldsMap)
+		{
+			self::$elasticFieldsMap = array(
+				'created_at' => 'createdAt',
+				'updated_at' => 'updatedAt',
+				'version' => 'version',
+				'metadata_profile_id' => 'metadataProfileId', //should be replaced by name?
+				'metadata_profile_version' => 'metadataProfileVersion',
+				'partner_id' => 'partnerId',
+				'object_id' => 'objectId',
+				'object_type' => 'objectType',
+				'metadata_status' => 'status',
+				'plugins_data' => 'pluginsData',
+			);
+		}
+		return self::$elasticFieldsMap;
+	}
+
 	protected static $typesMap;
 
 	public static function getIndexFieldTypesMap()

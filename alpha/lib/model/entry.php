@@ -2998,41 +2998,45 @@ class entry extends Baseentry implements ISyncableFile, IIndexable, IOwnable, IR
 	 */
 	public function getCategoriesEntryIds()
 	{
+		return self::CATEGORIES_INDEXED_FIELD_PREFIX . $this->getPartnerId() . " " . $this->getBaseCategoriesEntryIds();
+	}
+
+	public function getBaseCategoriesEntryIds()
+	{
 		$allCategoriesEntry = categoryEntryPeer::selectByEntryId($this->getId());
-		
+
 		$categoriesEntryStringIndex = array();
 		foreach($allCategoriesEntry as $categoryEntry)
 		{
 			$categoriesEntryStringIndex[] = self::CATEGORY_SEARCH_PERFIX . $categoryEntry->getCategoryId() .
 				self::CATEGORY_SEARCH_STATUS . $categoryEntry->getStatus();
-			
+
 			//index all category's parents - for easier searchs on entry->list with filter of categoriesMatchOr
 			$categoryFullIds = explode(categoryPeer::CATEGORY_SEPARATOR, $categoryEntry->getCategoryFullIds());
-			
+
 			foreach($categoryFullIds as $categoryId)
 			{
 				if(!trim($categoryId))
 					continue;
-					
+
 				if($categoryId != $categoryEntry->getCategoryId())
 				{
 					//parent category
 					$categoriesEntryStringIndex[] = self::CATEGORY_PARENT_SEARCH_PERFIX . $categoryId .
 						self::CATEGORY_SEARCH_STATUS . $categoryEntry->getStatus();
 				}
-				
+
 				//parent category or category itself
 				$categoriesEntryStringIndex[] = self::CATEGORY_OR_PARENT_SEARCH_PERFIX . $categoryId .
-						self::CATEGORY_SEARCH_STATUS . $categoryEntry->getStatus();
+					self::CATEGORY_SEARCH_STATUS . $categoryEntry->getStatus();
 			}
-				
+
 			if($categoryEntry->getStatus() == CategoryEntryStatus::ACTIVE || $categoryEntry->getStatus() == CategoryEntryStatus::PENDING)
 				$categoriesEntryStringIndex[] = $categoryEntry->getCategoryId();
 		}
-		
+
 		$categoriesEntryStringIndex = array_unique($categoriesEntryStringIndex);
-		
-		return self::CATEGORIES_INDEXED_FIELD_PREFIX . $this->getPartnerId() . " " .  implode(' ', $categoriesEntryStringIndex);
+		return implode(' ', $categoriesEntryStringIndex);
 	}
 	
 	/*
@@ -3138,6 +3142,13 @@ public function copyTemplate($copyPartnerId = false, $template)
 	{
 		$privacyContextForEntry = kEntitlementUtils::getPrivacyContextForEntry($this);
 		$privacyContextForEntry = kEntitlementUtils::addPrivacyContextsPrefix( $privacyContextForEntry, $this->getPartnerId() );
+
+		return implode(' ',$privacyContextForEntry);
+	}
+
+	public function getElasticPrivacyByContexts()
+	{
+		$privacyContextForEntry = kEntitlementUtils::getPrivacyContextForEntry($this);
 
 		return implode(' ',$privacyContextForEntry);
 	}
@@ -3575,4 +3586,5 @@ public function copyTemplate($copyPartnerId = false, $template)
 	{
 		return $this->getFromCustomData("in_clone");
 	}
+
 }

@@ -89,6 +89,49 @@ class categoryIndex extends BaseIndexObject
 		return self::$fieldsMap;
 	}
 
+	protected static $elasticFieldsMap;
+
+	public static function getElasticIndexFieldsMap()
+	{
+		if (!self::$elasticFieldsMap)
+		{
+			self::$elasticFieldsMap = array(
+				'category_id' => 'id',
+				'parent_id' => 'parentId',
+				'partner_id' => 'partnerId',
+				'name' => 'name',
+				'full_name' => 'fullName',
+				'full_ids' => 'fullIds',
+				'description' => 'description',
+				'tags' => 'tags',
+				'category_status' => 'status',
+				'kuser_id' => 'kuserId',
+				'members' => 'membersByPermissionLevel',
+				'depth' => 'depth',
+				'reference_id' => 'referenceId',
+				'privacy_context' => 'privacyContext',
+				'privacy_contexts' => 'privacyContexts',
+				'members_count' => 'membersCount',
+				'pending_members_count' => 'pendingMembersCount',
+				'entries_count' => 'entriesCount',
+				'direct_entries_count' => 'directEntriesCount',
+				'direct_sub_categories_count' => 'directSubCategoriesCount',
+				'privacy' => 'privacyPartnerIdx',
+				'inheritance_type' => 'inheritanceType',
+				'user_join_policy' => 'userJoinPolicy',
+				'default_permission_level' => 'defaultPermissionLevel',
+				'contribution_policy' => 'contributionPolicy',
+				'inherited_parent_id' => 'inheritedParentId',
+				'created_at' => 'createdAt',
+				'updated_at' => 'updatedAt',
+				'deleted_at' => 'deletedAt',
+				'aggregation_categories' => 'aggregationCategories',
+			);
+		}
+		return self::$elasticFieldsMap;
+	}
+
+
 	protected static $typesMap;
 
 	public static function getIndexFieldTypesMap()

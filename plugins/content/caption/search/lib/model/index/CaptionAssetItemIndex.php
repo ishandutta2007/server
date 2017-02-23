@@ -66,6 +66,36 @@ class CaptionAssetItemIndex extends BaseIndexObject
 		return self::$fieldsMap;
 	}
 
+	protected static $elasticFieldsMap;
+
+	public static function getElasticIndexFieldsMap()
+	{
+		if (!self::$elasticFieldsMap)
+		{
+			self::$elasticFieldsMap = array(
+				'entry_id' => 'entryId',
+				'caption_asset_id' => 'captionAssetId',
+				'tags' => 'tags',
+				'content' => 'content',
+				'partner_description' => 'partnerDescription',
+				'language' => 'language',
+				'label' => 'label',
+				'format' => 'format',
+				'caption_params_id' => 'captionParamsId',
+				'partner_id' => 'partnerId',
+				'version' => 'version',
+				'caption_asset_status' => 'status',
+				'size' => 'size',
+				'is_default' => 'default',
+				'start_time' => 'startTime',
+				'end_time' => 'endTime',
+				'created_at' => 'createdAt',
+				'updated_at' => 'updatedAt',
+			);
+		}
+		return self::$elasticFieldsMap;
+	}
+
 	protected static $typesMap;
 
 	public static function getIndexFieldTypesMap()

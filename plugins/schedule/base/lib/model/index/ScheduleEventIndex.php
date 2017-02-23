@@ -79,6 +79,49 @@ class ScheduleEventIndex extends BaseIndexObject
 		return self::$fieldsMap;
 	}
 
+	protected static $elasticFieldsMap;
+
+	public static function getElasticIndexFieldsMap()
+	{
+		if (!self::$elasticFieldsMap)
+		{
+			self::$elasticFieldsMap = array(
+				'int_id' => 'id',
+				'parent_id' => 'parentId',
+				'partner_id' => 'partnerId',
+				'summary' => 'summary',
+				'description' => 'description',
+				'schedule_event_type' => 'type',
+				'schedule_event_status' => 'status',
+				'original_start_date' => 'originalStartDate',
+				'start_date' => 'startDate',
+				'end_date' => 'endDate',
+				'reference_id' => 'referenceId',
+				'classification_type' => 'classificationType',
+				'location' => 'location',
+				'organizer' => 'organizer',
+				'owner_kuser_id' => 'ownerKuserId',
+				'priority' => 'priority',
+				'sequence' => 'sequence',
+				'recurrence_type' => 'recurrenceType',
+				'duration' => 'duration',
+				'contact' => 'contact',
+				'comment' => 'comment',
+				'tags' => 'tags',
+				'created_at' => 'createdAt',
+				'updated_at' => 'updatedAt',
+				'entry_ids' => 'entryIds',
+				'category_ids' => 'categoryIds',
+				'resource_ids' => 'resourceIds',
+				'template_entry_categories_ids' => 'templateEntryCategoriesIdsForIndex', // this is always ''????
+				'resource_system_names' => 'resourceSystemNames',
+				'template_entry_id' => 'templateEntryId',
+			);
+		}
+		return self::$elasticFieldsMap;
+	}
+
+
 	protected static $typesMap;
 
 	public static function getIndexFieldTypesMap()

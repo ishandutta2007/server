@@ -76,6 +76,42 @@ class CuePointIndex extends BaseIndexObject
 		return self::$fieldsMap;
 	}
 
+	protected static $elasticFieldsMap;
+
+	public static function getElasticIndexFieldsMap()
+	{
+		if (!self::$elasticFieldsMap)
+		{
+			self::$elasticFieldsMap = array(
+				'cue_point_id' => 'id',
+				'entry_id' => 'entryId',
+				'parent_id' => 'parentId',
+				'root_parent_id' => 'rootParentId',
+				'name' => 'name',
+				'system_name' => 'systemName',
+				'text' => 'text',
+				'tags' => 'tags',
+				'partner_id' => 'partnerId',
+				'start_time' => 'startTime',
+				'end_time' => 'endTime',
+				'duration' => 'duration',
+				'cue_point_status' => 'status',
+				'cue_point_type' => 'type',
+				'sub_type' => 'subType',
+				'kuser_id' => 'kuserId',
+				'depth' => 'depth',
+				'children_count' => 'childrenCount',
+				'direct_children_count' => 'directChildrenCount',
+				'force_stop' => 'forceStop',
+				'created_at' => 'createdAt',
+				'updated_at' => 'updatedAt',
+				'is_public' => 'isPublic',
+				'plugins_data' => 'pluginsData',
+			);
+		}
+		return self::$elasticFieldsMap;
+	}
+
 	protected static $typesMap;
 
 	public static function getIndexFieldTypesMap()

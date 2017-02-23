@@ -74,6 +74,39 @@ class EntryDistributionIndex extends BaseIndexObject
 		return self::$fieldsMap;
 	}
 
+	protected static $elasticFieldsMap;
+
+	public static function getElasticIndexFieldsMap()
+	{
+		if (!self::$elasticFieldsMap)
+		{
+			self::$elasticFieldsMap = array(
+				'created_at' => 'createdAt',
+				'updated_at' => 'updatedAt',
+				'submitted_at' => 'submittedAt',
+				'entry_id' => 'entryId',
+				'partner_id' => 'partnerId',
+				'distribution_profile_id' => 'distributionProfileId',
+				'entry_distribution_status' => 'status',
+				'dirty_status' => 'dirtyStatus',
+				'thumb_asset_ids' => 'thumbAssetIds',
+				'flavor_asset_ids' => 'flavorAssetIds',
+				'asset_ids' => 'assetIds',
+				'sunrise' => 'sunrise',
+				'sunset' => 'sunset',
+				'sun_status' => 'sunStatus',
+				'remote_id' => 'remoteId',
+				'plays' => 'plays',
+				'views' => 'views',
+				'error_type' => 'errorType',
+				'error_number' => 'errorNumber',
+				'last_report' => 'lastReport',
+			);
+		}
+		return self::$elasticFieldsMap;
+	}
+
+
 	protected static $typesMap;
 
 	public static function getIndexFieldTypesMap()

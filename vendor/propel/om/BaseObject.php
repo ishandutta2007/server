@@ -263,4 +263,11 @@ abstract class BaseObject {
 		return Propel::log(get_class($this) . ': ' . $msg, $priority);
 	}
 
+	public function getPluginsData()
+	{
+		/**Fix to remove stuff like cue_point_101..... */
+		KalturaLog::debug("@@NA [".print_r(kSphinxSearchManager::getPluginsData($this),true)."]");
+		return implode(' ',kSphinxSearchManager::getPluginsData($this));
+	}
+
 }

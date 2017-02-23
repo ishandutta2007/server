@@ -58,6 +58,30 @@ class categoryKuserIndex extends BaseIndexObject
 		return self::$fieldsMap;
 	}
 
+	protected static $elasticFieldsMap;
+
+	public static function getElasticIndexFieldsMap()
+	{
+		if (!self::$elasticFieldsMap)
+		{
+			self::$elasticFieldsMap = array(
+				'category_id' => 'categoryId',
+				'kuser_id' => 'kuserId',
+				'category_full_ids' => 'categoryFullIds',
+				'permission_names' => 'permissionNames',
+				'puser_id' => 'puserId',
+				'screen_name' => 'screenName',
+				'category_kuser_status' => 'indexStatus',
+				'partner_id' => 'partnerId',
+				'update_method' => 'indexUpdateMethod',
+				'created_at' => 'createdAt',
+				'updated_at' => 'updatedAt',
+			);
+		}
+		return self::$elasticFieldsMap;
+	}
+
+
 	protected static $typesMap;
 
 	public static function getIndexFieldTypesMap()

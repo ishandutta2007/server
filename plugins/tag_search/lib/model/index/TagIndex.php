@@ -54,6 +54,24 @@ class TagIndex extends BaseIndexObject
 		return self::$fieldsMap;
 	}
 
+	protected static $elasticFieldsMap;
+
+	public static function getElasticIndexFieldsMap()
+	{
+		if (!self::$elasticFieldsMap)
+		{
+			self::$elasticFieldsMap = array(
+				'tag' => 'tagWithEqual',
+				'partner_id' => 'partnerId',
+				'object_type' => 'objectType',
+				'created_at' => 'createdAt',
+				'instance_count' => 'instanceCount',
+				'privacy_context' => 'privacyContext',
+			);
+		}
+		return self::$elasticFieldsMap;
+	}
+
 	protected static $typesMap;
 
 	public static function getIndexFieldTypesMap()

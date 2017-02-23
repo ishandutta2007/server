@@ -106,6 +106,68 @@ class entryIndex extends BaseIndexObject
 		return self::$fieldsMap;
 	}
 
+	protected static $elasticFieldsMap;
+
+	public static function getElasticIndexFieldsMap()
+	{
+		if (!self::$elasticFieldsMap)
+		{
+			self::$elasticFieldsMap = array(
+				'entry_id' => 'id',
+				'name' => 'name',
+				'tags' => 'tags',
+				'categories' => 'baseCategoriesEntryIds',
+				'flavor_params' => 'flavorParamsIds',
+				'source_link' => 'sourceLink',
+				'kshow_id' => 'kshowId',
+				'group_id' => 'groupId',
+				'description' => 'description',
+				'admin_tags' => 'adminTags',
+				'duration_type' => 'durationType',
+				'reference_id' => 'referenceId',
+				'replacing_entry_id' => 'replacingEntryId',
+				'replaced_entry_id' => 'replacedEntryId',
+				'roots' => 'roots',
+				'kuser_id' => 'kuserId',
+				'puser_id' => 'puserId',
+				'creator_kuser_id' => 'creatorKuserId',
+				'creator_puser_id' => 'creatorPuserId',
+				'entitled_kusers_publish' => 'entitledKusersPublish',
+				'entitled_kusers_edit' => 'entitledKusersEdit',
+				'privacy_by_contexts' => 'elasticPrivacyByContexts',
+				'user_names' => 'userNames',
+				'type' => 'type',
+				'media_type' => 'mediaType',
+				'views' => 'views',
+				'moderation_status' => 'moderationStatus',
+				'length_in_msecs' => 'lengthInMsecs',
+				'access_control_id' => 'accessControlId',//should be changed to name?
+				'moderation_count' => 'moderationCount',
+				'rank' => 'rank',
+				'total_rank' => 'totalRank',
+				'plays' => 'plays',
+				'replacement_status' => 'replacementStatus',
+				'source' => 'source',
+				'entry_status' => 'status',
+				'partner_id' => 'partnerId',
+				'display_in_search' => 'displayInSearch',
+				'partner_sort_value' => 'partnerSortValue',
+				'created_at' => 'createdAt',
+				'updated_at' => 'updatedAt',
+				'modified_at' => 'modifiedAt',
+				'media_date' => 'mediaDate',
+				'start_date' => 'startDate',
+				'end_date' => 'endDate',
+				'available_from' => 'availableFrom',
+				'last_played_at' => 'lastPlayedAt',
+				'entitled_kusers' => 'entitledKusers',
+				'dynamic_attributes' => 'dynamicAttributes',
+				'plugins_data' => 'pluginsData',
+			);
+		}
+		return self::$elasticFieldsMap;
+	}
+
 	protected static $typesMap;
 
 	public static function getIndexFieldTypesMap()

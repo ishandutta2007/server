@@ -54,6 +54,26 @@ class kuser extends Basekuser implements IIndexable, IRelatedObject
 	}
 	public static function getSearchableColumnName () { return "search_text" ; }
 
+	/**
+	 * @return array
+	 */
+	public function getPermissionNamesStr()
+	{
+		$permissionNamesArray = array();
+		if ($this->getRoleIds())
+		{
+			$roleIds = explode(",", $this->getRoleIds());
+			foreach ($roleIds as $roleId)
+			{
+				$role = UserRolePeer::retrieveByPK($roleId);
+				$permissionNames = $role->getPermissionNames(null, true);
+				$permissionNames = str_replace("*", self::UNIVERSAL_PERMISSION, $permissionNames);
+				$permissionNamesArray = array_merge($permissionNamesArray, explode(",", $permissionNames));
+			}
+		}
+		return implode(',', $permissionNamesArray);
+	}
+
 	public function save(PropelPDO $con = null)
 	{
 		myPartnerUtils::setPartnerIdForObj( $this );
@@ -1206,22 +1226,11 @@ class kuser extends Basekuser implements IIndexable, IRelatedObject
 	 */
 	public function getIndexedPermissionNames ()
 	{
-		$permissionNamesArray  = array();
-		if ($this->getRoleIds())
-		{
-			$roleIds = explode(",", $this->getRoleIds());
-			foreach($roleIds as $roleId)
-			{
-				$role = UserRolePeer::retrieveByPK($roleId);
-				$permissionNames = $role->getPermissionNames(null, true);
-				$permissionNames = str_replace("*", self::UNIVERSAL_PERMISSION, $permissionNames);
-				$permissionNamesArray = array_merge($permissionNamesArray, explode(",", $permissionNames));
-			}			
-		}		
+		$permissionNames = $this->getPermissionNamesStr();
 		
-		return self::getIndexedFieldValue('kuserPeer::PERMISSION_NAMES', implode(',', $permissionNamesArray), $this->getPartnerId());
+		return self::getIndexedFieldValue('kuserPeer::PERMISSION_NAMES', $permissionNames, $this->getPartnerId());
 	}	
-	
+
 	/**
 	 * Get the indexed value for the role ids to index to the search engine
 	 * @param string $roleIds

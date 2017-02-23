@@ -244,35 +244,7 @@ class kSphinxSearchManager implements kObjectUpdatedEventConsumer, kObjectAddedE
 		}
 		
 		// TODO - remove after solving the replace bug that removes all fields
-		$pluginInstances = KalturaPluginManager::getPluginInstances('IKalturaSearchDataContributor');
-		$sphinxPluginsData = array();
-		foreach($pluginInstances as $pluginName => $pluginInstance)
-		{
-			KalturaLog::debug("Loading $pluginName sphinx texts");
-			$sphinxPluginData = null;
-			try
-			{
-				$sphinxPluginData = $pluginInstance->getSearchData($object);
-			}
-			catch(Exception $e)
-			{
-				KalturaLog::err($e->getMessage());
-				continue;
-			}
-			
-			if($sphinxPluginData){
-				KalturaLog::debug("Sphinx data for $pluginName [" . print_r($sphinxPluginData,true) . "]");
-				
-				foreach ($sphinxPluginData as $fieldName => $fieldValue){
-					if (isset($sphinxPluginsData[$fieldName]))
-						$sphinxPluginsData[$fieldName] .= ' ' . $fieldValue;
-					else{
-						$sphinxPluginsData[$fieldName] = $fieldValue;
-					}				
-				}
-			}			
-
-		}
+		self::getPluginsData($object);
 
 		$xmlPipe2 = isset($options["format"]) ? $options["format"] == "xmlPipe2" : false;
 
@@ -528,5 +500,39 @@ class kSphinxSearchManager implements kObjectUpdatedEventConsumer, kObjectAddedE
 		return false;
         
     }
+
+	public static function getPluginsData(IIndexable $object)
+	{
+		$pluginInstances = KalturaPluginManager::getPluginInstances('IKalturaSearchDataContributor');
+		$sphinxPluginsData = array();
+		foreach($pluginInstances as $pluginName => $pluginInstance)
+		{
+			KalturaLog::debug("Loading $pluginName sphinx texts");
+			$sphinxPluginData = null;
+			try
+			{
+				$sphinxPluginData = $pluginInstance->getSearchData($object);
+			}
+			catch(Exception $e)
+			{
+				KalturaLog::err($e->getMessage());
+				continue;
+			}
+
+			if($sphinxPluginData){
+				KalturaLog::debug("Sphinx data for $pluginName [" . print_r($sphinxPluginData,true) . "]");
+
+				foreach ($sphinxPluginData as $fieldName => $fieldValue){
+					if (isset($sphinxPluginsData[$fieldName]))
+						$sphinxPluginsData[$fieldName] .= ' ' . $fieldValue;
+					else{
+						$sphinxPluginsData[$fieldName] = $fieldValue;
+					}
+				}
+			}
+
+		}
+		return $sphinxPluginsData;
+	}
 
 }

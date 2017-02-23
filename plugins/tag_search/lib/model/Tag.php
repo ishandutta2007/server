@@ -99,7 +99,7 @@ class Tag extends BaseTag implements IIndexable
 	{
 		return $this->getPartnerId() . self::OBJECT_TYPE_INDEX_PREFIX. $this->getObjectType();
 	}
-	
+
 	public static function getIndexedFieldValue ($fieldName, $fieldValue, $partnerId)
 	{
 		$prefix = null;

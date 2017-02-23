@@ -219,25 +219,9 @@ abstract class ScheduleEvent extends BaseScheduleEvent implements IRelatedObject
 
 	public function getResourceIdsForIndex()
 	{
-		$resources = ScheduleEventResourcePeer::retrieveByEventIdOrItsParentId($this->getId());
-
-		$index = array();
-		foreach($resources as $resource)
-		{
-			/* @var $resource ScheduleEventResource */
-				
-			$index[] = $resource->getResourceId();
-				
-			$fullParentIds = $resource->getFullParentIds();
-			foreach($fullParentIds as $parentId)
-			{
-				$index[] = self::RESOURCE_PARENT_SEARCH_PERFIX . $parentId;
-			}
-		}
+		$index = $this->getResourceIds();
 	
-		$index = array_unique($index);
-	
-		return self::RESOURCES_INDEXED_FIELD_PREFIX . $this->getPartnerId() . " " .  implode(' ', $index);
+		return self::RESOURCES_INDEXED_FIELD_PREFIX . $this->getPartnerId() . " " . $index;
 	}
 
 	public function getTemplateEntryCategoriesIdsForIndex()
@@ -246,6 +230,62 @@ abstract class ScheduleEvent extends BaseScheduleEvent implements IRelatedObject
 	}
 
 	public function getResourceSystemNamesForIndex()
+	{
+		$system_names = $this->getResourceSystemNames();
+		return $system_names;
+	}
+
+	public function getSummary()
+	{
+		if (parent::getSummary())
+			return parent::getSummary();
+		if ($this->parent_id)
+		{
+			$parentObj = ScheduleEventPeer::retrieveByPK($this->parent_id);
+			if ($parentObj)
+				return $parentObj->getSummary();
+		}
+	}
+
+	public static function getEventValues($scheduleEvents, $field)
+	{
+		$fieldVals = array();
+		foreach($scheduleEvents as $scheduleEvent) {
+			/* @var $scheduleEvent ScheduleEvent */
+			$fieldVals[] = $scheduleEvent->$field(null);
+		}
+		return $fieldVals;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getResourceIds()
+	{
+		$resources = ScheduleEventResourcePeer::retrieveByEventIdOrItsParentId($this->getId());
+
+		$index = array();
+		foreach ($resources as $resource)
+		{
+			/* @var $resource ScheduleEventResource */
+
+			$index[] = $resource->getResourceId();
+
+			$fullParentIds = $resource->getFullParentIds();
+			foreach ($fullParentIds as $parentId)
+			{
+				$index[] = self::RESOURCE_PARENT_SEARCH_PERFIX . $parentId;
+			}
+		}
+
+		$index = array_unique($index);
+		return implode(' ', $index);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getResourceSystemNames()
 	{
 		$eventResources = ScheduleEventResourcePeer::retrieveByEventId($this->getId());
 
@@ -271,27 +311,5 @@ abstract class ScheduleEvent extends BaseScheduleEvent implements IRelatedObject
 			}
 		}
 		return implode(' ', $system_names);
-	}
-
-	public function getSummary()
-	{
-		if (parent::getSummary())
-			return parent::getSummary();
-		if ($this->parent_id)
-		{
-			$parentObj = ScheduleEventPeer::retrieveByPK($this->parent_id);
-			if ($parentObj)
-				return $parentObj->getSummary();
-		}
-	}
-
-	public static function getEventValues($scheduleEvents, $field)
-	{
-		$fieldVals = array();
-		foreach($scheduleEvents as $scheduleEvent) {
-			/* @var $scheduleEvent ScheduleEvent */
-			$fieldVals[] = $scheduleEvent->$field(null);
-		}
-		return $fieldVals;
 	}
 } // ScheduleEvent

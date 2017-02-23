@@ -78,6 +78,39 @@ class kuserIndex extends BaseIndexObject
 		return self::$fieldsMap;
 	}
 
+	protected static $elasticFieldsMap;
+
+	public static function getElasticIndexFieldsMap()
+	{
+		if (!self::$elasticFieldsMap)
+		{
+			self::$elasticFieldsMap = array(
+				'login_data_id' => 'loginDataId', //Should be changed to login_data?
+				'is_admin' => 'isAdmin',
+				'screen_name' => 'screenName',
+				'full_name' => 'fullName',
+				'first_name' => 'firstName',
+				'last_name' => 'lastName',
+				'email' => 'email',
+				'about_me' => 'aboutMe',
+				'tags' => 'tags',
+				'entries' => 'entries',
+				'storage_size' => 'storageSize',
+				'kuser_status' => 'status',
+				'created_at' => 'createdAt',
+				'updated_at' => 'updatedAt',
+				'partner_id' => 'partnerId',
+				'display_in_search' => 'displayInSearch',
+				'partner_data' => 'partnerData',
+				'puser_id' => 'puserId',
+				'permission_names' => 'permissionNamesStr',
+				'role_ids' => 'roleIds',
+				'type' => 'type',
+			);
+		}
+		return self::$elasticFieldsMap;
+	}
+
 	protected static $typesMap;
 
 	public static function getIndexFieldTypesMap()
