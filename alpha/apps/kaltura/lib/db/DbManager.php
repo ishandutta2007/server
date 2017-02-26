@@ -1,4 +1,7 @@
 <?php
+
+require_once(__DIR__.'/../../../../../vendor/elastic/autoload.php');
+
 /**
  *  @package server-infra
  *  @subpackage DB
@@ -10,6 +13,8 @@ class DbManager
 	const EXTRA_DB_CONFIG_KEY = 'extra_db_configs';
 	
 	const STICKY_SESSION_PREFIX = 'StickySessionIndex:';
+
+	const DB_CONFIG_ELASTIC = 'elastic';
 	
 	/**
 	 * @var array
@@ -44,8 +49,13 @@ class DbManager
 	/**
 	 * @param int
 	 */
-	protected static $connIndex = false; 
-	
+	protected static $connIndex = false;
+
+	/**
+	 * @var array
+	 */
+	protected static $elasticClient = null;
+
 	public static function setConfig(array $config)
 	{
 		$reflect = new ReflectionClass('KalturaPDO');
@@ -287,4 +297,26 @@ class DbManager
 		}
 		return array(null, false);
 	}
+
+	/**
+	 * THIS METHOD PROBABLY NEEDS BETTER CACHING AND MORE CONFIGURATION
+	 * @return KalturaPDO
+	 */
+	public static function getElasticConnection()
+	{
+		if(!self::$elasticClient)
+		{
+			$elasticHostsStr = isset(self::$config['elastic_hosts']['hosts']) ? self::$config['elastic_hosts']['hosts'] : array(self::DB_CONFIG_ELASTIC);
+			$elasticHosts = explode(',', $elasticHostsStr);
+			self::$elasticClient = Elasticsearch\ClientBuilder::create()           // Instantiate a new ClientBuilder
+			->setHosts($elasticHosts)      // Set the hosts
+			->build();
+			if (!self::$elasticClient)
+			{
+				throw new Exception('Failed to connect to elastic server config');
+			}
+		}
+		return self::$elasticClient;
+	}
+
 }

@@ -61,7 +61,7 @@ class TagIndex extends BaseIndexObject
 		if (!self::$elasticFieldsMap)
 		{
 			self::$elasticFieldsMap = array(
-				'tag' => 'tagWithEqual',
+				'tag' => 'tag',
 				'partner_id' => 'partnerId',
 				'object_type' => 'objectType',
 				'created_at' => 'createdAt',
