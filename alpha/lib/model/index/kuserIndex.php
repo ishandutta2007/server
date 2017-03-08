@@ -106,6 +106,7 @@ class kuserIndex extends BaseIndexObject
 				'permission_names' => 'permissionNamesStr',
 				'role_ids' => 'roleIds',
 				'type' => 'type',
+				'categories' => 'categoriesIds',
 			);
 		}
 		return self::$elasticFieldsMap;

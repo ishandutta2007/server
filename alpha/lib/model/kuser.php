@@ -1282,4 +1282,18 @@ class kuser extends Basekuser implements IIndexable, IRelatedObject
 			$dbCategoryKuser->save();
 		}
 	}
+
+	public function getCategoriesIds()
+	{
+		$categoryKusers = $this->getcategoryKusers();
+		$categoryIds = array();
+		foreach ($categoryKusers as $categoryKuser)
+		{
+			/**
+			 * @var categoryKuser $categoryKuser
+			 */
+			$categoryIds[] = $categoryKuser->getCategoryFullIds();
+		}
+		return implode(',', $categoryIds);
+	}
 }

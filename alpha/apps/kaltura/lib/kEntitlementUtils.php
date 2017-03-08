@@ -391,17 +391,7 @@ class kEntitlementUtils
 		else
 			$privacyContexts = self::getPrivacyContextsByAllCategoryIds($entry);
 
-		//Entry That doesn't assinged to any category is public.
-		if (!count($privacyContexts))
-			$privacyContexts[self::DEFAULT_CONTEXT] = PrivacyType::ALL ;
-
-		$entryPrivacyContexts = array();
-		foreach ($privacyContexts as $categoryPrivacyContext => $Privacy)
-			$entryPrivacyContexts[] = $categoryPrivacyContext . self::TYPE_SEPERATOR . $Privacy;
-
-		KalturaLog::info('Privacy by context: ' . print_r($entryPrivacyContexts,true));
-
-		return $entryPrivacyContexts;
+		return $privacyContexts;
 	}
 
 	private static function getCategoriesByIds($categoriesIds)

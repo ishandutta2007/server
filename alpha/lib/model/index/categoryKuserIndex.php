@@ -71,9 +71,9 @@ class categoryKuserIndex extends BaseIndexObject
 				'permission_names' => 'permissionNames',
 				'puser_id' => 'puserId',
 				'screen_name' => 'screenName',
-				'category_kuser_status' => 'indexStatus',
+				'category_kuser_status' => 'searchIndexStatus',
 				'partner_id' => 'partnerId',
-				'update_method' => 'indexUpdateMethod',
+				'update_method' => 'searchIndexUpdateMethod',
 				'created_at' => 'createdAt',
 				'updated_at' => 'updatedAt',
 			);

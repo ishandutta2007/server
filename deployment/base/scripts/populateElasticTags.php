@@ -3,6 +3,7 @@ chdir(dirname(__FILE__));
 
 require_once(__DIR__ . '/../../bootstrap.php');
 require_once(__DIR__.'/../../../vendor/elastic/autoload.php');
+require_once('mapping.php');
 
 $allPeers = array(
 	"tag" => TagPeer,
@@ -53,6 +54,9 @@ if ($importFile && $exportFileName)
 
 if (!$exportFileName)
 	$elastic = initElasticClient($elasticServer);
+
+//createMappings($mappingParamsCategoryEntry);
+//createMappings($mappingParamsEntry);
 
 if ($importFile)
 	doImportFromFile($importFile);
@@ -162,6 +166,12 @@ function doImportFromFile($importFile)
 		KalturaLog::alert('import file could not be opened');
 	}
 	KalturaLog::log("finished importing [$totalImported] rows to elastic");
+}
+
+function createMappings($indexParams)
+{
+	global $elastic;
+	$response = $elastic->indices()->create($indexParams);
 }
 
 function printUsage()

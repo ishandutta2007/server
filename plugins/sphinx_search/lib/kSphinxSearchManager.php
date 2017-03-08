@@ -244,7 +244,7 @@ class kSphinxSearchManager implements kObjectUpdatedEventConsumer, kObjectAddedE
 		}
 		
 		// TODO - remove after solving the replace bug that removes all fields
-		self::getPluginsData($object);
+		$sphinxPluginsData = self::getPluginsData($object);
 
 		$xmlPipe2 = isset($options["format"]) ? $options["format"] == "xmlPipe2" : false;
 

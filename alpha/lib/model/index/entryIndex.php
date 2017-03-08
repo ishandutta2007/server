@@ -116,7 +116,7 @@ class entryIndex extends BaseIndexObject
 				'entry_id' => 'id',
 				'name' => 'name',
 				'tags' => 'tags',
-				'categories' => 'baseCategoriesEntryIds',
+				'categories' => 'elasticCategoriesEntryIds',
 				'flavor_params' => 'flavorParamsIds',
 				'source_link' => 'sourceLink',
 				'kshow_id' => 'kshowId',

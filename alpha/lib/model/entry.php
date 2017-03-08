@@ -3038,7 +3038,21 @@ class entry extends Baseentry implements ISyncableFile, IIndexable, IOwnable, IR
 		$categoriesEntryStringIndex = array_unique($categoriesEntryStringIndex);
 		return implode(' ', $categoriesEntryStringIndex);
 	}
-	
+
+	public function getElasticCategoriesEntryIds()
+	{
+		$allCategoriesEntry = categoryEntryPeer::selectByEntryId($this->getId());
+		$categoryIds = array();
+		foreach ($allCategoriesEntry as $categoryEntry)
+		{
+			/**
+			 * @var CategoryEntry $categoryEntry
+			 */
+			$categoryIds[] = $categoryEntry->getCategoryId();
+		}
+		return implode(' ', $categoryIds);
+	}
+
 	/*
 	 * get all categoryEntry objects from categoryEntryPeer
 	 */
@@ -3140,16 +3154,31 @@ public function copyTemplate($copyPartnerId = false, $template)
 	
 	public function getPrivacyByContexts()
 	{
-		$privacyContextForEntry = kEntitlementUtils::getPrivacyContextForEntry($this);
-		$privacyContextForEntry = kEntitlementUtils::addPrivacyContextsPrefix( $privacyContextForEntry, $this->getPartnerId() );
+		$privacyContexts = kEntitlementUtils::getPrivacyContextForEntry($this);
+		//Entry That doesn't assinged to any category is public.
+		if (!count($privacyContexts))
+			$privacyContexts[kEntitlementUtils::DEFAULT_CONTEXT] = PrivacyType::ALL ;
 
+		$privacyContextForEntry = array();
+		foreach ($privacyContexts as $categoryPrivacyContext => $Privacy)
+			$privacyContextForEntry[] = $categoryPrivacyContext . kEntitlementUtils::TYPE_SEPERATOR . $Privacy;
+
+		KalturaLog::info('Privacy by context: ' . print_r($privacyContextForEntry,true));
+
+		$privacyContextForEntry = kEntitlementUtils::addPrivacyContextsPrefix( $privacyContextForEntry, $this->getPartnerId() );
 		return implode(' ',$privacyContextForEntry);
 	}
 
 	public function getElasticPrivacyByContexts()
 	{
-		$privacyContextForEntry = kEntitlementUtils::getPrivacyContextForEntry($this);
+		$privacyContexts = kEntitlementUtils::getPrivacyContextForEntry($this);
+		//Entry That doesn't assinged to any category is public.
+		if (!count($privacyContexts))
+			$privacyContexts = array(kEntitlementUtils::DEFAULT_CONTEXT);
 
+		$privacyContextForEntry = array();
+		foreach ($privacyContexts as $categoryPrivacyContext => $Privacy)
+			$privacyContextForEntry[] = $categoryPrivacyContext;
 		return implode(' ',$privacyContextForEntry);
 	}
 	

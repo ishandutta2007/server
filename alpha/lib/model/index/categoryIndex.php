@@ -116,7 +116,6 @@ class categoryIndex extends BaseIndexObject
 				'entries_count' => 'entriesCount',
 				'direct_entries_count' => 'directEntriesCount',
 				'direct_sub_categories_count' => 'directSubCategoriesCount',
-				'privacy' => 'privacyPartnerIdx',
 				'inheritance_type' => 'inheritanceType',
 				'user_join_policy' => 'userJoinPolicy',
 				'default_permission_level' => 'defaultPermissionLevel',
